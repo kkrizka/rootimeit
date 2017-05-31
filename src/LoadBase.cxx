@@ -67,8 +67,9 @@ void LoadBase::setupHists()
 
 }
 
-double LoadBase::eventSize() const
+double LoadBase::eventSize()
 {
+  setupInput();
   return m_fh->GetSize()/m_tree->GetEntries();
 }
 

@@ -18,7 +18,7 @@ public:
   void setNBranches(uint nBranches);
   void setNHists(uint nHists);
 
-  double eventSize() const;
+  double eventSize();
 
   double runTest();
 
