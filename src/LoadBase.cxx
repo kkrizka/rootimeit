@@ -6,7 +6,8 @@
 
 LoadBase::LoadBase()
   : m_fh(0), m_tree(0),
-    m_nBranches(0)
+    m_nBranches(0),m_nHists(0),
+    m_cacheSize(0)
 {
   for(uint i=0;i<50;i++)
     m_pointers[i]=new std::vector<float>();
@@ -30,11 +31,16 @@ void LoadBase::setNBranches(uint nBranches)
 void LoadBase::setNHists(uint nHists)
 { m_nHists=nHists; }
 
+void LoadBase::setCacheSize(uint cacheSize)
+{ m_cacheSize=cacheSize; }
+
 void LoadBase::setupInput()
 {
   if(m_fh!=0) m_fh->Close();
   m_fh=TFile::Open(m_path.c_str());
   m_tree=dynamic_cast<TTree*>(m_fh->Get("tree"));
+  m_tree->SetCacheSize(m_cacheSize*1024*1024);
+  m_tree->SetCacheLearnEntries(1000);
 }
 
 void LoadBase::setupBranches()

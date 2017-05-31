@@ -18,6 +18,8 @@ public:
   void setNBranches(uint nBranches);
   void setNHists(uint nHists);
 
+  void setCacheSize(uint size);
+  
   double eventSize();
 
   double runTest();
@@ -31,7 +33,9 @@ private:
   std::string m_path;
   uint m_nBranches;
   uint m_nHists;
-  
+
+  uint m_cacheSize;
+
   TFile *m_fh;
   TTree *m_tree;
 
