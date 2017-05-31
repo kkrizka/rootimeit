@@ -12,6 +12,7 @@ for i in range(50):
     for x in range(5):
         vec.push_back(x)
     t.Branch('test%02d'%i,vec)
+    pointers.append(vec)
 
 for i in range(100000):
     t.Fill()
