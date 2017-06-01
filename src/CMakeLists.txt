@@ -1,18 +1,24 @@
 FIND_PACKAGE(ROOT REQUIRED)
 INCLUDE(${ROOT_USE_FILE})
 
-SET(HEADERS LoadBase.h
+SET(HEADERS
+  Test.h
+  LoadBase.h
   LoadVector.h
-  LoadArray.h)
+  LoadArray.h
+  LoadTClonesArray.h)
 
-SET(SRCS LoadBase.cxx
+SET(SRCS
+  Test.cxx
+  LoadBase.cxx
   LoadVector.cxx
-  LoadArray.cxx)
+  LoadArray.cxx
+  LoadTClonesArray.cxx)
 
 ROOT_GENERATE_DICTIONARY(G__rootimeit ${HEADERS} LINKDEF LinkDef.h)
 
 ADD_LIBRARY(rootimeit SHARED ${SRCS} G__rootimeit.cxx)
 TARGET_LINK_LIBRARIES(rootimeit ${ROOT_LIBRARIES})
 
-ADD_EXECUTABLE(rootimeittest main.cxx ${SRCS})
-TARGET_LINK_LIBRARIES(rootimeittest ${ROOT_LIBRARIES})
+ADD_EXECUTABLE(rootimeittest main.cxx)
+TARGET_LINK_LIBRARIES(rootimeittest rootimeit ${ROOT_LIBRARIES})
