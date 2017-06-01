@@ -9,13 +9,13 @@ LoadBase::LoadBase()
     m_nBranches(0),m_nHists(0),
     m_cacheSize(0)
 {
-  for(uint i=0;i<50;i++)
+  for(uint i=0;i<10000;i++)
     m_pointers[i]=new std::vector<float>();
 }
 
 LoadBase::~LoadBase()
 {
-  for(uint i=0;i<50;i++)
+  for(uint i=0;i<10000;i++)
     {
       delete m_pointers[i];
       m_pointers[i]=0;
@@ -81,20 +81,32 @@ double LoadBase::eventSize()
 
 double LoadBase::runTest()
 {
-  setupInput();
-  setupBranches();
-  setupHists();
-
-  std::clock_t tbegin = std::clock();
-  for(uint i=0;i<m_tree->GetEntries();i++)
+  double x=0.;
+  double xx=0.;
+  uint n=0;
+  for(uint i=0;i<10;i++)
     {
-      m_tree->GetEntry(i);
-      for(uint hidx=0;hidx<m_hists.size();hidx++)
-	m_hists[hidx]->Fill(m_pointers[hidx%m_nBranches]->at(0));
+      setupInput();
+      setupBranches();
+      setupHists();
+
+      std::clock_t tbegin = std::clock();
+      for(uint i=0;i<m_tree->GetEntries();i++)
+	{
+	  m_tree->GetEntry(i);
+	  for(uint hidx=0;hidx<m_hists.size();hidx++)
+	    m_hists[hidx]->Fill(m_pointers[hidx%m_nBranches]->at(0));
+	}
+      std::clock_t tend = std::clock(); 
+      double elapsed_secs = double(tend - tbegin) / CLOCKS_PER_SEC;
+      //std::cout << elapsed_secs << std::endl;
+
+      // Statistics
+      x+=elapsed_secs;
+      xx+=elapsed_secs*elapsed_secs;
+      n++;
     }
-  std::clock_t tend = std::clock(); 
-  double elapsed_secs = double(tend - tbegin) / CLOCKS_PER_SEC;
   //std::cout << "time " << elapsed_secs << std::endl;
   //std::cout << "rate " << m_tree->GetEntries()/elapsed_secs << std::endl;
-  return elapsed_secs/m_tree->GetEntries();
+  return x/m_tree->GetEntries()/n;
 }

@@ -39,7 +39,7 @@ private:
   TFile *m_fh;
   TTree *m_tree;
 
-  std::vector<float>* m_pointers[50];
+  std::vector<float>* m_pointers[10000];
   std::vector<TH1*> m_hists;
 };
 
