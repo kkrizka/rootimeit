@@ -1,22 +1,35 @@
 #!/usr/bin/env python
 
 import ROOT
+import random
+import os.path
 
-fh=ROOT.TFile('test.root','RECREATE')
+def generate(nbr=50,compress=0):
+    outname='/ssdisk02/rootimeit/test_nbr%05d_comp%d.root'%(nbr,compress)
+    if os.path.exists(outname): return
 
-t=ROOT.TTree('tree','tree')
+    random.seed(1)
+    fh=ROOT.TFile(outname,'RECREATE','',compress)
 
-pointers=[]
-for i in range(50):
-    vec = ROOT.vector('double')()
-    for x in range(5):
-        vec.push_back(x)
-    t.Branch('test%02d'%i,vec)
-    pointers.append(vec)
+    t=ROOT.TTree('tree','tree')
 
-for i in range(100000):
-    t.Fill()
+    pointers=[]
+    for i in range(nbr):
+        vec = ROOT.vector('double')()
+        for x in range(10):
+            vec.push_back(random.random())
+        t.Branch('test%02d'%i,vec)
+        pointers.append(vec)
 
-t.Write()
+    for i in range(100000):
+        t.Fill()
 
-fh.Close()
+    t.Write()
+
+    fh.Close()
+
+
+for compress in [0,1,9]:
+    for nbr in [1,5,10,25,50,100]:
+        if nbr==0: nbr=1
+        generate(nbr,compress)
