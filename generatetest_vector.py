@@ -5,7 +5,7 @@ import random
 import os.path
 
 def generate(nbr=50,compress=0):
-    outname='/ssdisk02/rootimeit/test_nbr%05d_comp%d.root'%(nbr,compress)
+    outname='/ssdisk02/rootimeit/test_vector_nbr%05d_comp%d.root'%(nbr,compress)
     if os.path.exists(outname): return
 
     random.seed(1)

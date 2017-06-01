@@ -9,7 +9,7 @@ ROOT.gSystem.Load('src/librootimeit.so')
 
 def generate(compress=0):
     outname='/ssdisk02/rootimeit/test_tclonesarray_nbr00050_comp%d.root'%(compress)
-    #if os.path.exists(outname): return
+    if os.path.exists(outname): return
 
     random.seed(1)
     fh=ROOT.TFile(outname,'RECREATE','',compress)
