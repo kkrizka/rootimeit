@@ -1,9 +1,13 @@
 FIND_PACKAGE(ROOT REQUIRED)
 INCLUDE(${ROOT_USE_FILE})
 
-SET(HEADERS LoadBase.h)
+SET(HEADERS LoadBase.h
+  LoadVector.h
+  LoadArray.h)
 
-SET(SRCS LoadBase.cxx)
+SET(SRCS LoadBase.cxx
+  LoadVector.cxx
+  LoadArray.cxx)
 
 ROOT_GENERATE_DICTIONARY(G__rootimeit ${HEADERS} LINKDEF LinkDef.h)
 

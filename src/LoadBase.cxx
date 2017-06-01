@@ -8,19 +8,10 @@ LoadBase::LoadBase()
   : m_fh(0), m_tree(0),
     m_nBranches(0),m_nHists(0),
     m_cacheSize(0)
-{
-  for(uint i=0;i<10000;i++)
-    m_pointers[i]=new std::vector<float>();
-}
+{ }
 
 LoadBase::~LoadBase()
-{
-  for(uint i=0;i<10000;i++)
-    {
-      delete m_pointers[i];
-      m_pointers[i]=0;
-    }
-}
+{ }
 
 void LoadBase::setPath(const std::string& path)
 { m_path=path; }
@@ -53,7 +44,6 @@ void LoadBase::setupBranches()
       ss.str("");
       ss << "test" << std::setfill('0') << std::setw(2) << i;
       m_tree->SetBranchStatus(ss.str().c_str(), 1);
-      m_tree->SetBranchAddress(ss.str().c_str(), &m_pointers[i]);
     }  
 }
 
@@ -91,12 +81,7 @@ double LoadBase::runTest()
       setupHists();
 
       std::clock_t tbegin = std::clock();
-      for(uint i=0;i<m_tree->GetEntries();i++)
-	{
-	  m_tree->GetEntry(i);
-	  for(uint hidx=0;hidx<m_hists.size();hidx++)
-	    m_hists[hidx]->Fill(m_pointers[hidx%m_nBranches]->at(0));
-	}
+      runLoop();
       std::clock_t tend = std::clock(); 
       double elapsed_secs = double(tend - tbegin) / CLOCKS_PER_SEC;
       //std::cout << elapsed_secs << std::endl;

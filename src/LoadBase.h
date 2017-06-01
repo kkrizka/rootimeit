@@ -25,11 +25,12 @@ public:
   double runTest();
 
 protected:
-  void setupInput();
-  void setupBranches();
-  void setupHists();
+  virtual void setupInput();
+  virtual void setupBranches();
+  virtual void setupHists();
 
-private:
+  virtual void runLoop() =0;
+
   std::string m_path;
   uint m_nBranches;
   uint m_nHists;
@@ -39,7 +40,6 @@ private:
   TFile *m_fh;
   TTree *m_tree;
 
-  std::vector<float>* m_pointers[10000];
   std::vector<TH1*> m_hists;
 };
 

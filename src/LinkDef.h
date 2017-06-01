@@ -5,6 +5,7 @@
 #pragma link off all functions;
 #pragma link C++ nestedclass;
 
-#pragma link C++ defined_in "LoadBase.h";
+#pragma link C++ defined_in "LoadVector.h";
+#pragma link C++ defined_in "LoadArray.h";
 
 #endif
