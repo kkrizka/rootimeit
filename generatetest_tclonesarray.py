@@ -7,9 +7,9 @@ import array
 
 ROOT.gSystem.Load('src/librootimeit.so')
 
-def generate(compress=0):
-    outname='/ssdisk02/rootimeit/test_tclonesarray_nbr00050_comp%d.root'%(compress)
-    if os.path.exists(outname): return
+def generate(nbr=50,compress=0):
+    outname='/ssdisk02/rootimeit/test_tclonesarray_nbr%05d_comp%d.root'%(nbr,compress)
+    #if os.path.exists(outname): return
 
     random.seed(1)
     fh=ROOT.TFile(outname,'RECREATE','',compress)
@@ -30,6 +30,10 @@ def generate(compress=0):
             setattr(test,'test%02d'%br,data[br][x])
         pointer[x]=test
 
+    t.SetBranchStatus('*',0)
+    for i in range(nbr):
+        t.SetBranchStatus('test.test%02d'%i,1)
+
     for i in range(100000):
         t.Fill()
 
@@ -39,4 +43,6 @@ def generate(compress=0):
 
 
 for compress in [0,1,9]:
-    generate(compress)
+    for nbr in [1,5,10,25,50,100]:
+        if nbr==0: nbr=1
+        generate(nbr,compress)
